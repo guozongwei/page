@@ -3,22 +3,115 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>测试</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>测试</title>
     <meta name="apple-touch-fullscreen" content="YES">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" type="text/css" href="http://mncdn.2gdt.com/trace/trace_cn/css/common.css">
-    <link rel="stylesheet" type="text/css" href="http://mncdn.2gdt.com/trace/trace_en/css/en.css">
 </head>
+<script src="http://webstatic.hefantv.com/h5/common/importantFile.js" type="text/javascript"></script>
+<style type="text/css">
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.viewport {
+    width: 100%;
+    height: 17.9rem;
+    background-image: url('images/bac.jpg');
+    background-size: 100% 100%;
+    position: relative;
+}
+
+.viewport > .button {
+    width: 100%;
+    height: 1.72rem;
+    position: absolute;
+    bottom: 1.86rem;
+    left: 0;
+    background: url('images/btn-bac.png') center 0 no-repeat;
+    background-size: 5.19rem 1.71rem;
+}
+
+.button div {
+    width: 1.97rem;
+    height: 0.52rem;
+    margin: 0 auto;
+    margin-top: 0.58rem;
+}
+
+.viewport > .button > #recharge {
+    background-image: url('images/btn-recharge.png');
+    background-size: 100% 100%;
+}
+
+.shareBtn {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.3rem;
+    width: 0.71rem;
+    height: 0.71rem;
+    background-image: url('images/share-btn.png');
+    background-size: 100% 100%;
+}
+
+.conBox {
+    position: relative;
+    background-size: 100%;
+}
+
+.pageBtn {
+    position: absolute;
+    background-size: 100%;
+    cursor: pointer;
+}
+</style>
 
 <body>
-    <div class="conBox" style="background: url(&quot;http://testerh5.hefantv.com/club/activity/hifuntvRecharge/images/bac.jpg&quot;) 0px 0px / 100% no-repeat; width: 750px; height: 1790px;"><div class="pageBtn" style="background: url(&quot;http://testerh5.hefantv.com/club/activity/hifuntvRecharge/images/share-btn.png&quot;) 0px 0px / 100% no-repeat; width: 71px; height: 71px; left: 302px; top: 421px;"></div><div class="pageBtn" style="background: url(&quot;http://testerh5.hefantv.com/club/activity/hifuntvRecharge/images/share-btn.png&quot;) 0px 0px / 100% no-repeat; width: 71px; height: 71px; left: 46px; top: 13px;"></div></div>
+    <div class="conBox" style="background: url(&quot;http://testerh5.hefantv.com/club/activity/hifuntvRecharge/images/bac.jpg&quot;) 0px 0px / 100% no-repeat; width: 750px; height: 1790px;"><div class="pageBtn" style="background: url(&quot;http://testerh5.hefantv.com/club/activity/hifuntvRecharge/images/share-btn.png&quot;) 0px 0px / 100% no-repeat; width: 71px; height: 71px;"></div><div class="pageBtn" style="background: url(&quot;http://testerh5.hefantv.com/club/activity/hifuntvRecharge/images/share-btn.png&quot;) 0px 0px / 100% no-repeat; width: 71px; height: 71px; left: 100px; top: 30px;"></div><div class="pageBtn" style="background: url(&quot;http://testerh5.hefantv.com/club/activity/hifuntvRecharge/images/share-btn.png&quot;) 0px 0px / 100% no-repeat; width: 71px; height: 71px;"></div></div>
 </body>
-<script src="http://mncdn.2gdt.com/trace/trace_cn/js/jquery-3.1.0.min.js" type="text/javascript"></script>
-<script src="http://mncdn.2gdt.com/trace/trace_cn/js/index.js" type="text/javascript"></script>
+<script type="text/javascript" src="../../apiConf.js"></script>
+<script type="text/javascript" src="http://webstatic.hefantv.com/h5/lib/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="http://webstatic.hefantv.com/h5/common/common.js"></script>
 <script type="text/javascript">
+//isDownLoad = Number(getQueryString("download")) || 0,
+var hv = getQueryString("hv") || 0,
+    $recharge = $('#recharge'),
+    $shareBtn = $('#shareBtn');
+//分享
+$shareBtn.on('click', function() {
+        _faq.push(['_data', 'type=click&q_btn_name=充值活动分享按钮&q_btn_id=rechargeShareBtn']);
+        window.__hfa();
+        var sort = [
+            ["returnType", "11"],
+            ["activityName", "充值活动"],
+            ["shareTitle", "春暖花开，优惠袭来"],
+            ["shareDesc", "盒饭LIVE 3-4月充值有福利，玩儿直播趁现在！"],
+            ["shareImg", apiConf.activityLink + 'hifuntvRecharge/images/shareIcon.jpg'],
+            ["shareLink", apiConf.activityLink + 'hifuntvRecharge/share.html']
+        ];
+        if (hv == 0) {
+            sort.unshift(["isEncodeURI", "0"]);
+        }
+        h5gotoAppVerson(hv, sort);
+    })
+    //充值
+$recharge.on("click", function() {
+    _faq.push(['_data', 'type=click&q_btn_name=充值活动立即充值按钮&q_btn_id=rechargeBtn']);
+    window.__hfa();
+    var sort = [
+        ["returnType", "4"]
+    ];
+    if (hv == 0) {
+        sort.unshift(["isEncodeURI", "0"]);
+    }
+    h5gotoAppVerson(hv, sort);
+
+})
 </script>
+<!-- 统计代码 -->
+<script src="../../ha.js"></script>
 
 </html>
