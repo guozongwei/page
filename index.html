@@ -15,46 +15,20 @@
 * {
     margin: 0;
     padding: 0;
-}
-
-.viewport {
-    width: 100%;
-    height: 17.9rem;
-    background-image: url('images/bac.jpg');
-    background-size: 100% 100%;
-    position: relative;
-}
-
-.viewport > .button {
-    width: 100%;
-    height: 1.72rem;
-    position: absolute;
-    bottom: 1.86rem;
-    left: 0;
-    background: url('images/btn-bac.png') center 0 no-repeat;
-    background-size: 5.19rem 1.71rem;
-}
-
-.button div {
-    width: 1.97rem;
-    height: 0.52rem;
-    margin: 0 auto;
-    margin-top: 0.58rem;
-}
-
-.viewport > .button > #recharge {
-    background-image: url('images/btn-recharge.png');
-    background-size: 100% 100%;
-}
-
-.shareBtn {
-    position: absolute;
-    top: 0.4rem;
-    right: 0.3rem;
-    width: 0.71rem;
-    height: 0.71rem;
-    background-image: url('images/share-btn.png');
-    background-size: 100% 100%;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+    font-family: '微软雅黑', 'Microsoft YaHei';
+    font-weight: normal;
+    font-style: normal;
+    list-style-type: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+    -ms-tap-highlight-color: rgba(0, 0, 0, 0);
+    -o-tap-highlight-color: rgba(0, 0, 0, 0);
+    tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .conBox {
@@ -70,48 +44,142 @@
 </style>
 
 <body>
-    <div class="conBox" style="background: url(&quot;http://testerh5.hefantv.com/club/activity/hifuntvRecharge/images/bac.jpg&quot;) 0px 0px / 100% no-repeat; width: 7.5rem; height: 17.9rem;"><div class="pageBtn" style="background: url(&quot;http://testerh5.hefantv.com/club/activity/hifuntvRecharge/images/share-btn.png&quot;) 0px 0px / 100% no-repeat; width: 0.71rem; height: 0.71rem; left: 1rem; top: 0.1rem;"></div><div class="pageBtn" style="background: url(&quot;http://testerh5.hefantv.com/club/activity/hifuntvRecharge/images/share-btn.png&quot;) 0px 0px / 100% no-repeat; width: 0.71rem; height: 0.71rem; left: 0.3rem; top: 1rem;"></div></div>
+    <div class="conBox" style="background: url(&quot;http://testerh5.hefantv.com/club/activity/hifuntvRecharge/images/bac.jpg&quot;) 0px 0px / 100% no-repeat; width: 7.5rem; height: 17.9rem;"></div>
 </body>
-<script type="text/javascript" src="../../apiConf.js"></script>
 <script type="text/javascript" src="http://webstatic.hefantv.com/h5/lib/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="http://webstatic.hefantv.com/h5/common/common.js"></script>
 <script type="text/javascript">
-//isDownLoad = Number(getQueryString("download")) || 0,
-var hv = getQueryString("hv") || 0,
-    $recharge = $('#recharge'),
-    $shareBtn = $('#shareBtn');
-//分享
-$shareBtn.on('click', function() {
-        _faq.push(['_data', 'type=click&q_btn_name=充值活动分享按钮&q_btn_id=rechargeShareBtn']);
-        window.__hfa();
-        var sort = [
-            ["returnType", "11"],
-            ["activityName", "充值活动"],
-            ["shareTitle", "春暖花开，优惠袭来"],
-            ["shareDesc", "盒饭LIVE 3-4月充值有福利，玩儿直播趁现在！"],
-            ["shareImg", apiConf.activityLink + 'hifuntvRecharge/images/shareIcon.jpg'],
-            ["shareLink", apiConf.activityLink + 'hifuntvRecharge/share.html']
-        ];
-        if (hv == 0) {
-            sort.unshift(["isEncodeURI", "0"]);
-        }
-        h5gotoAppVerson(hv, sort);
-    })
-    //充值
-$recharge.on("click", function() {
-    _faq.push(['_data', 'type=click&q_btn_name=充值活动立即充值按钮&q_btn_id=rechargeBtn']);
-    window.__hfa();
-    var sort = [
-        ["returnType", "4"]
-    ];
-    if (hv == 0) {
-        sort.unshift(["isEncodeURI", "0"]);
-    }
-    h5gotoAppVerson(hv, sort);
+var _faq = _faq || [];
+$(function() {
+        var urlQuery = getUrlQuery(),
+            $recharge = $('#recharge'),
+            $shareBtn = $('.shareBtn'),
+            $clubBtn = $('.clubBtn'),
+            $liveRoomBtn = $('.liveRoomBtn'),
+            $rechargeBtn = $('.rechargeBtn'),
+            pageParam = {"shareInfo":{"activityName":"","shareTitle":"","shareDesc":"","shareImg":"","shareLink":""},"anchorInfo":{"userId":""}};
+        //分享
+        if (urlQuery.actfrom != 'web') { // APP 内
+            if (urlQuery.hv >= 3) {
+                var data = {
+                    share: {
+                        isShow: 1,
+                        title: pageParam.shareInfo.shareTitle,
+                        desc: pageParam.shareInfo.shareDesc,
+                        shareUrl: pageParam.shareInfo.shareLink,
+                        imgURL: pageParam.shareInfo.shareImg
+                    }
+                }
+                setDataforApp(data);
+            } else {
 
-})
+                $shareBtn.on('click', function() {
+
+                    setFaq(2, urlQuery.consume);
+                    var sort = [
+                        ["returnType", "11"],
+                        ["activityName", "充值活动"],
+                        ["shareTitle", "春暖花开，优惠袭来"],
+                        ["shareDesc", "盒饭LIVE 3-4月充值有福利，玩儿直播趁现在！"],
+                        ["shareImg", pageParam.shareInfo.shareImg + 'hifuntvRecharge/images/shareIcon.jpg'],
+                        ["shareLink", pageParam.shareInfo.activityLink + 'hifuntvRecharge/share.html']
+                    ];
+                    if (urlQuery.hv == 0) {
+                        sort.unshift(["isEncodeURI", "0"]);
+                    }
+                    h5gotoAppVerson(urlQuery.hv, sort);
+                })
+            }
+        } else { // web
+            /** 页面二次分享 */
+            commonShare(pageParam.shareInfo.shareTitle, pageParam.shareInfo.shareDesc, pageParam.shareInfo.shareLink, pageParam.shareInfo.shareImg); //分享标题,分享链接,分享图片链接
+        }
+        //充值
+        $recharge.on("click", function() {
+
+                setFaq(3, urlQuery.consume);
+                var sort = [
+                    ["returnType", "4"]
+                ];
+                if (urlQuery.hv == 0) {
+                    sort.unshift(["isEncodeURI", "0"]);
+                }
+                h5gotoAppVerson(urlQuery.hv, sort);
+
+            })
+            /** 跳转到 俱乐部 */
+        $clubBtn.on("click", function() {
+                setFaq(1, urlQuery.consume);
+                var sort = [
+                    ["returnType", "3"],
+                    ["userId", pageParam.anchorInfo.userId]
+                ];
+                var hv1 = urlQuery.hv || 1;
+                if (hv1 == 0) {
+                    sort.unshift(["isEncodeURI", "0"]);
+                }
+                h5gotoAppVerson(hv1, sort);
+
+            })
+            /** 跳转到 直播间 */
+        $liveRoomBtn.on("click", function() {
+            setFaq(0, urlQuery.consume); //增加点击统计
+            if (urlQuery.actfrom == 'web') {
+                window.location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=com.starunion.hefantv";
+                return
+            }
+            $.ajax({
+                type: "GET",
+                url: apiConf.ajaxLink + "v1/h5/getSystemTime",
+                data: {
+                    data: {
+                        userId: pageParam.anchorInfo.userId
+                    }
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data.code == 1000) {
+                        var status = data.data.status; //status 0 未播 1在播
+                        var d = data.data.data;
+                        if (status == 1) {
+                            if (d && status == 1 && urlQuery.hv > 0) {
+
+                                var sort = setLivingData(urlQuery.hv, d);
+                                if (urlQuery.hv == 0) {
+                                    sort.unshift(["isEncodeURI", "0"]);
+                                }
+                                h5gotoAppVerson(urlQuery.hv, sort);
+                            }
+                        }
+                    }
+                }
+            });
+
+        })
+    })
+    /** 增加统计（点击）*/
+function setFaq(type, filename) {
+    var name = document.title,
+        btn_id = filename;
+    switch (type) {
+        case 0:
+            _faq.push(['_data', 'type=click&q_btn_name=' + name + '_直播间&q_btn_id=live_' + btn_id]);
+            break;
+        case 1:
+            _faq.push(['_data', 'type=click&q_btn_name=' + name + '_俱乐部&q_btn_id=club_' + btn_id]);
+            break;
+        case 2:
+            _faq.push(['_data', 'type=click&q_btn_name=' + name + '_分享&q_btn_id=share_' + btn_id]);
+            break;
+        case 3:
+            _faq.push(['_data', 'type=click&q_btn_name=' + name + '_充值&q_btn_id=recharge_' + btn_id]);
+            break;
+    }
+
+    window.__hfa();
+}
 </script>
 <!-- 统计代码 -->
-<script src="../../ha.js"></script>
+<script src="https://ha.hefantv.com/hfa.js"></script>
 
 </html>
